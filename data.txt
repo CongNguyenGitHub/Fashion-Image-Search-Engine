@@ -1,0 +1,3 @@
+📌 Dataset are too large for GitHub. Please download them from the following links:
+
+🔗 Kaggle link: https://www.kaggle.com/datasets/alvations/farfetch-listings
