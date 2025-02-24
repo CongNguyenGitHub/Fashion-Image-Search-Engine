@@ -1,3 +1,5 @@
-📌 Dataset are too large for GitHub. Please download them from the following links:
+📌 The dataset is too large for GitHub. Please download it from the following link:
 
-🔗 Kaggle link: https://www.kaggle.com/datasets/alvations/farfetch-listings
+🔗 Kaggle Dataset: https://www.kaggle.com/datasets/alvations/farfetch-listings  
+
+After downloading, extract the dataset and place it inside the `code/input/` directory.
