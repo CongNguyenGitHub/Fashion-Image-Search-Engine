@@ -1,0 +1,5 @@
+📌 The extracted feature vectors are too large for GitHub. Please download them from the following link:
+
+🔗 Features Download: https://drive.google.com/file/d/1V3OyaO2WyIfzjTc35GANdzL0Oit5D59I/view?usp=sharing
+
+After downloading, extract the `features/` folder and place it inside the `code/` directory.
