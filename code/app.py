@@ -52,43 +52,49 @@ uploaded_file = st.file_uploader("Upload an image:", type=["jpg", "jpeg", "png"]
 
 if uploaded_file is not None:
     pil_image = Image.open(uploaded_file).convert("RGB")
-    st.image(pil_image, caption="Uploaded Image", use_container_width=True)
 
-    st.write("### Running model...")
-    start_time = time.time()
+    # Create two columns: left for uploaded image, right for similar images
+    col1, col2 = st.columns([1, 2])  # Adjust the ratio as needed (e.g., 1:2)
 
-    # Model selection
-    if model_choice == "VGG":
-        top_k_images, top_k_labels = find_top_k_images_vgg_faiss(
-            pil_image, vgg_model, vgg_features, vgg_labels, vgg_paths, top_k
-        )
-    elif model_choice == "ResNet":
-        top_k_images, top_k_labels = find_top_k_images_resnet_faiss(
-            pil_image, resnet_model, resnet_features, resnet_labels, resnet_paths, top_k
-        )
-    elif model_choice == "Inception":
-        top_k_images, top_k_labels = find_top_k_images_inception_faiss(
-            pil_image,
-            inception_model,
-            inception_features,
-            inception_labels,
-            inception_paths,
-            top_k,
-        )
+    # Left column: Display uploaded image
+    with col1:
+        st.subheader("Uploaded Image")
+        st.image(pil_image, use_container_width=True)
 
-    end_time = time.time()
+    # Right column: Process and display similar images
+    with col2:
+        st.subheader(f"Top-{top_k} Similar Images")
+        start_time = time.time()
 
-    # Display results
-    st.write(f"### Execution Time: {end_time - start_time:.2f} seconds")
-    st.write(f"### Top-{top_k} Similar Images:")
+        # Model selection
+        if model_choice == "VGG":
+            top_k_images, top_k_labels = find_top_k_images_vgg_faiss(
+                pil_image, vgg_model, vgg_features, vgg_labels, vgg_paths, top_k
+            )
+        elif model_choice == "ResNet":
+            top_k_images, top_k_labels = find_top_k_images_resnet_faiss(
+                pil_image, resnet_model, resnet_features, resnet_labels, resnet_paths, top_k
+            )
+        elif model_choice == "Inception":
+            top_k_images, top_k_labels = find_top_k_images_inception_faiss(
+                pil_image,
+                inception_model,
+                inception_features,
+                inception_labels,
+                inception_paths,
+                top_k,
+            )
 
-    # Display images in a grid
-    num_cols = 5  # Number of images per row
-    rows = (top_k + num_cols - 1) // num_cols  # Calculate total rows needed
-    for row in range(rows):
-        cols = st.columns(num_cols)
-        for col_idx in range(num_cols):
-            img_idx = row * num_cols + col_idx
-            if img_idx < top_k:
-                cols[col_idx].image(top_k_images[img_idx], use_container_width=True)
-                cols[col_idx].write(f"Label: {top_k_labels[img_idx]}")
+        end_time = time.time()
+
+
+        # Display similar images in a grid
+        num_cols = 3  # Number of images per row (adjust as needed)
+        rows = (top_k + num_cols - 1) // num_cols  # Calculate total rows needed
+        for row in range(rows):
+            cols = st.columns(num_cols)
+            for col_idx in range(num_cols):
+                img_idx = row * num_cols + col_idx
+                if img_idx < top_k:
+                    cols[col_idx].image(top_k_images[img_idx], use_container_width=True)
+                    cols[col_idx].write(f"Label: {top_k_labels[img_idx]}")
